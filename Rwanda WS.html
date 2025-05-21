@@ -33,10 +33,24 @@
     attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors'
   }).addTo(map);
 
-  // Optional: Add a marker for Kigali
-  L.marker([-1.9441, 30.0619]).addTo(map)
-    .bindPopup('Kigali - Capital of Rwanda')
-    .openPopup();
+  // Load CSV file
+  Papa.parse("for_ploting.csv", {
+      download: true,
+      header: true,
+      complete: function(results) {
+        results.data.forEach(function(row) {
+          if (row.latitude && row.longitude) {
+            var lat = parseFloat(row.latitude);
+            var lng = parseFloat(row.longitude);
+            var name = row.name;
+
+            L.marker([lat, lng]).addTo(map)
+              .bindPopup(name);
+          }
+        });
+      }
+    });
+
 </script>
 
 </body>

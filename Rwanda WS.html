@@ -34,18 +34,45 @@
   }).addTo(map);
 
   // Load CSV file
-  Papa.parse("for_ploting.csv", {
-      download: true,
+  document.getElementById('csvFile').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    Papa.parse(file, {
       header: true,
+      skipEmptyLines: true,
       complete: function(results) {
+        markerGroup.clearLayers(); // Clear previous markers
+
         results.data.forEach(function(row) {
-          if (row.latitude && row.longitude) {
-            var lat = parseFloat(row.latitude);
-            var lng = parseFloat(row.longitude);
-            var name = row.name;
+          const lat = parseFloat(row['Latitude(-)']);
+          const lng = parseFloat(row['Longitude']);
+
+          if (!isNaN(lat) && !isNaN(lng)) {
+            const name = row['Name of Station'] || 'Unknown';
+            const type = row['Type of Station'] || '';
+            const district = row['District'] || '';
+            const sector = row['Sector'] || '';
+            const altitude = row['Altitude (m)'] || '';
+
+            const popupContent = `
+              <strong>${name}</strong><br>
+              Type: ${type}<br>
+              District: ${district}<br>
+              Sector: ${sector}<br>
+              Altitude: ${altitude} m
+            `;
+
+            const marker = L.marker([lat, lng]).bindPopup(popupContent);
+            markerGroup.addLayer(marker);
+          }
+        });
+
+        if (markerGroup.getLayers().length > 0) {
+          map.fitBounds(markerGroup.getBounds());
 
             L.marker([lat, lng]).addTo(map)
-              .bindPopup(name);
+              .bindPopup(`<strong>${station.name}</strong>`);
           }
         });
       }

@@ -1,4 +1,4 @@
-ID,Name of Station,Type of Station,District,Sector,Altitude (m),,Latitude(-),Longitude
+ID,Name of Station,Type of Station,District,Sector,Altitude (m),Latitude(-),Longitude
 13,Busogo,Agro-Meteo,Musanze,Busogo,2100,,-1.554288,29.550834
 5,Butare,Synoptic,Huye,Ngoma,1720,,-2.595,29.74
 3,Byimana,Agro-Meteo,Ruhango,Byimana,1827,,-2.142341,29.743927
